@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phage</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { height: 100%; }
+
+    body {
+      background: #ffffff;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    /* ---- The real page, sitting underneath (z-index 0) ---- */
+    #page {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: 700 6rem/1 system-ui, sans-serif;
+      letter-spacing: 0.1em;
+      color: #111;
+    }
+
+    /* ---- The PHAGE "shell" that shatters away ---- */
+    #shell {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* Always-on-top button to clear the cached flag and replay */
+    #reset {
+      position: fixed;
+      right: 12px;
+      bottom: 12px;
+      z-index: 100;
+      padding: 6px 12px;
+      font: 500 0.8rem system-ui, sans-serif;
+      color: #333;
+      background: #fff;
+      border: 1px solid #bbb;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #reset:hover { background: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <!-- Real page underneath -->
+  <div id="page">HELLO</div>
+
+  <!-- PHAGE shell that shatters (removed after the intro plays) -->
+  <canvas id="shell"></canvas>
+
+  <!-- Clears the cached intro flag and reloads so the animation replays -->
+  <button id="reset">refresh cache</button>
+
+  <script>
+  (function () {
+    var KEY = 'phage_intro_seen';
+    var replay = location.search.indexOf('replay') !== -1;
+
+    var shell = document.getElementById('shell');
+
+    document.getElementById('reset').addEventListener('click', function () {
+      try { localStorage.removeItem(KEY); } catch (err) {}
+      location.href = location.pathname + '?replay';
+    });
+
+    // Already played (and not forcing replay) -> just show the page.
+    if (!replay && localStorage.getItem(KEY)) {
+      shell.remove();
+      return;
+    }
+
+    var ctx = shell.getContext('2d');
+    var W, H, DPR;
+
+    function rnd(m) { return (Math.random() - 0.5) * 2 * m; }
+
+    // ---- Load the two PHAGE images that make up the shell ----
+    var imgA = new Image(), imgB = new Image();
+    var loaded = 0;
+    imgA.onload = imgB.onload = function () { if (++loaded === 2) start(); };
+    imgA.onerror = imgB.onerror = function () { if (++loaded === 2) start(); };
+    imgA.src = 'PHAGE.png';
+    imgB.src = 'neverend.png';
+
+    function resize() {
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      shell.width = W * DPR;
+      shell.height = H * DPR;
+      shell.style.width = W + 'px';
+      shell.style.height = H + 'px';
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      if (!shattered) paintShell();
+    }
+
+    // Draw white background + the two PHAGE images at their placements.
+    function paintShell() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, W, H);
+      drawImg(imgA, 0.231, 0.085);
+      drawImg(imgB, 0.201, 0.572);
+    }
+
+    function drawImg(img, leftPct, topPct) {
+      if (!img.naturalWidth) return;
+      var w = Math.min(W * 0.6, 1100);
+      var h = w * img.naturalHeight / img.naturalWidth;
+      ctx.drawImage(img, W * leftPct, H * topPct, w, h);
+    }
+
+    // ---- Trigger: 2 seconds OR first cursor movement ----
+    var shattered = false;
+
+    function start() {
+      resize();
+      window.addEventListener('resize', resize);
+
+      var timer = setTimeout(function () { trigger(W / 2, H / 2); }, 2000);
+
+      // Break once the cursor has travelled a fair distance (not just moved).
+      var moved = 0;
+      var MOVE_MAX = 800;   // px of accumulated cursor travel before it breaks
+      window.addEventListener('pointermove', function (e) {
+        moved += Math.hypot(e.movementX || 0, e.movementY || 0);
+        if (moved >= MOVE_MAX) {
+          clearTimeout(timer);
+          trigger(e.clientX, e.clientY);
+        }
+      });
+    }
+
+    function trigger(cx, cy) {
+      if (shattered) return;
+      shatter(cx, cy);
+    }
+
+    // ---- Shatter: radial glass-break into flying shards ----
+    function shatter(cx, cy) {
+      shattered = true;
+      try { localStorage.setItem(KEY, '1'); } catch (err) {}
+
+      // Snapshot the current shell (PHAGE screen) as the shard texture.
+      var cap = document.createElement('canvas');
+      cap.width = shell.width;
+      cap.height = shell.height;
+      cap.getContext('2d').drawImage(shell, 0, 0);
+
+      var maxR = 0;
+      [[0, 0], [W, 0], [0, H], [W, H]].forEach(function (c) {
+        maxR = Math.max(maxR, Math.hypot(c[0] - cx, c[1] - cy));
+      });
+
+      // ----- one shatter (radial glass-break) -----
+      var RINGS = 4, SPOKES = 20;
+      var grid = [];
+      for (var i = 0; i <= RINGS; i++) {
+        grid[i] = [];
+        var r = maxR * Math.pow(i / RINGS, 1.25);
+        for (var j = 0; j <= SPOKES; j++) {
+          if (i === 0) { grid[i][j] = [cx, cy]; continue; }
+          var a = (j / SPOKES) * Math.PI * 2 + rnd(0.12);
+          var rr = r + rnd(maxR * 0.05);
+          grid[i][j] = [cx + Math.cos(a) * rr + rnd(6), cy + Math.sin(a) * rr + rnd(6)];
+        }
+      }
+
+      var pieces = [];
+      for (var i = 0; i < RINGS; i++) {
+        for (var j = 0; j < SPOKES; j++) {
+          var poly = i === 0
+            ? [grid[0][0], grid[1][j], grid[1][j + 1]]
+            : [grid[i][j], grid[i][j + 1], grid[i + 1][j + 1], grid[i + 1][j]];
+
+          var sx = 0, sy = 0;
+          for (var k = 0; k < poly.length; k++) { sx += poly[k][0]; sy += poly[k][1]; }
+          sx /= poly.length; sy /= poly.length;
+
+          var side = (sx - W / 2) / (W / 2);   // -1 (far left) .. +1 (far right)
+          pieces.push({
+            poly: poly,
+            dx: 0, dy: 0, alpha: 1,
+            // tiny outward nudge — pieces just barely separate, no rotation
+            vx: side * (0.5 + Math.random() * 0.5) + rnd(0.3),
+            vy: rnd(0.4)
+          });
+        }
+      }
+
+      var fadeAt = 250;            // brief hold, then fade away
+      var start = performance.now();
+
+      function frame(now) {
+        var t = now - start;
+        ctx.clearRect(0, 0, W, H);
+        var visible = false;
+        for (var p = 0; p < pieces.length; p++) {
+          var pc = pieces[p];
+          pc.dx += pc.vx;
+          pc.dy += pc.vy;
+          if (t > fadeAt) pc.alpha -= 0.006;   // fade into transparency (slow)
+          if (pc.alpha > 0) { visible = true; drawPiece(pc, cap); }
+        }
+        if (visible) requestAnimationFrame(frame);
+        else shell.remove();        // reveal the page fully
+      }
+      requestAnimationFrame(frame);
+
+      function drawPiece(pc, tex) {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, pc.alpha);
+        ctx.translate(pc.dx, pc.dy);   // just a slight offset, no rotation
+        ctx.beginPath();
+        ctx.moveTo(pc.poly[0][0], pc.poly[0][1]);
+        for (var k = 1; k < pc.poly.length; k++) ctx.lineTo(pc.poly[k][0], pc.poly[k][1]);
+        ctx.closePath();
+        ctx.clip();
+        ctx.drawImage(tex, 0, 0, W, H);
+        ctx.restore();
+      }
+    }
+  })();
+  </script>
+</body>
+</html>
