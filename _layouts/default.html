@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Declare a light color scheme so browser "force / auto dark mode"
+       leaves our colors alone instead of auto-inverting the page. -->
+  <meta name="color-scheme" content="light only" />
+  <title>{{ page.title | default: site.title }}</title>
+  <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}" />
+</head>
+<body class="{% if page.layout == 'post' %}reader{% endif %}">
+  {{ content }}
+</body>
+</html>

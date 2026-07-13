@@ -1,0 +1,210 @@
+/* ==========================================================================
+   Dark-mode resistance. Opt out of automatic inversion (Chrome Auto Dark
+   Theme, Windows High-Contrast / forced-colors). Our palette is fixed, and
+   because these live in the shared stylesheet the blog + overlay inherit it.
+   ========================================================================== */
+:root {
+  color-scheme: light only;
+  forced-color-adjust: none;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  forced-color-adjust: none;   /* keep set colors under forced-colors */
+}
+
+/* ==========================================================================
+   Hand-drawn body font. Falls back to system-ui until phage.woff2 exists,
+   so the site is fully usable before the real font is supplied.
+   ========================================================================== */
+@font-face {
+  font-family: 'Phage';
+  src: url('fonts/phage.woff2') format('woff2');
+  font-display: swap;
+}
+
+:root {
+  --ink: #111;
+  --muted: #666;
+  --line: #e2e2e2;
+  --card-bg: #fafafa;
+  --card-hover: #f0f0f0;
+  --font: 'Phage', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+html, body { height: 100%; }
+
+body {
+  background: #ffffff;
+  color: var(--ink);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;                     /* locked during the intro */
+}
+
+/* ==========================================================================
+   Intro shell (the shattering PHAGE canvas) + replay button. Unchanged.
+   ========================================================================== */
+#shell {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#reset {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 100;
+  padding: 6px 12px;
+  font: 500 0.8rem system-ui, sans-serif;
+  color: #333;
+  background: #fff;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#reset:hover { background: #f2f2f2; }
+
+/* ==========================================================================
+   The blog (revealed once the intro finishes / is skipped).
+   Hidden until <html> gets `.revealed`; then the body scrolls and #page
+   becomes a normal centered column.
+   ========================================================================== */
+#page {
+  visibility: hidden;                   /* shown only after reveal */
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 6rem;
+}
+
+html.revealed body { overflow: auto; }
+html.revealed #page { visibility: visible; }
+
+.brand {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  margin: 0 auto 3rem;
+}
+
+/* ---- Card grid ---- */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+  padding: 1.25rem 1.4rem;
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  color: var(--ink);
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover {
+  background: var(--card-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+.card:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+.card-title { font-size: 1.35rem; line-height: 1.2; }
+.card-date  { font-size: 0.8rem; color: var(--muted); }
+.card-excerpt { font-size: 0.95rem; color: var(--muted); line-height: 1.4; }
+
+/* ==========================================================================
+   In-place reader overlay.
+   ========================================================================== */
+#overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 4.5rem 1.25rem 6rem;
+}
+
+/* Lock the background from scrolling while the overlay is open. */
+html.overlay-open body { overflow: hidden; }
+
+#back {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 60;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--ink);
+  background: #fff center / 60% no-repeat;
+  /* Swap in the supplied art once assets/img/back.png exists; the arrow
+     glyph is the placeholder until then. */
+  /* background-image: url('img/back.png'); */
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+}
+#back:hover { background-color: #f2f2f2; }
+
+/* Shared post typography — used by the overlay body and the standalone
+   permalink pages. */
+.prose {
+  max-width: 720px;
+  margin: 0 auto;
+  line-height: 1.65;
+}
+.prose .post-title { font-size: 2.2rem; line-height: 1.15; margin-bottom: 0.35rem; }
+.prose .post-date  { display: block; color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+.prose h1, .prose h2, .prose h3 { margin: 1.6rem 0 0.6rem; line-height: 1.25; }
+.prose p, .prose ul, .prose ol, .prose blockquote { margin: 0 0 1.1rem; }
+.prose ul, .prose ol { padding-left: 1.4rem; }
+.prose img { max-width: 100%; height: auto; border-radius: 10px; }
+.prose a { color: #1a5fb4; }
+.prose pre {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 10px;
+  overflow-x: auto;
+}
+.prose code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; }
+.prose blockquote {
+  border-left: 3px solid var(--line);
+  padding-left: 1rem;
+  color: var(--muted);
+}
+
+/* ==========================================================================
+   Standalone permalink pages (/posts/<slug>/) — the shareable/SEO fallback
+   when JS or the overlay isn't in play. Always visible and scrollable, no
+   dependency on the intro's `.revealed` flag or the minima theme.
+   ========================================================================== */
+body.reader { overflow: auto; }
+#reader {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4rem 1.25rem 6rem;
+}
+.back-link {
+  display: inline-block;
+  margin-bottom: 2.5rem;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+.back-link:hover { text-decoration: underline; }

@@ -1,0 +1,13 @@
+---
+layout: default
+---
+<main id="reader">
+  <a class="back-link" href="{{ '/' | relative_url }}">&larr; PHAGE</a>
+  <article class="post-content prose">
+    <h1 class="post-title">{{ page.title }}</h1>
+    <time class="post-date" datetime="{{ page.date | date_to_xmlschema }}">
+      {{ page.date | date: "%b %-d, %Y" }}
+    </time>
+    {{ content }}
+  </article>
+</main>

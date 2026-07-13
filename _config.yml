@@ -1,0 +1,23 @@
+title: PHAGE
+baseurl: "/phage"
+url: ""
+markdown: kramdown
+
+# Posts still get a real permalink; the in-place overlay is progressive
+# enhancement layered on top of it.
+permalink: /posts/:slug/
+
+# Give every post the standalone reader layout so /posts/<slug>/ pages are
+# self-contained (head, styles, back link) rather than bare HTML fragments.
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
