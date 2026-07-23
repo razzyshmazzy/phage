@@ -13,11 +13,6 @@
     document.documentElement.classList.add('revealed');
   }
 
-  document.getElementById('reset').addEventListener('click', function () {
-    try { localStorage.removeItem(KEY); } catch (err) {}
-    location.href = location.pathname + '?replay';
-  });
-
   // Already played (and not forcing replay) -> just show the page.
   if (!replay && localStorage.getItem(KEY)) {
     revealPage();

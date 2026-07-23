@@ -54,21 +54,6 @@ body {
   pointer-events: none;
 }
 
-#reset {
-  position: fixed;
-  right: 12px;
-  bottom: 12px;
-  z-index: 100;
-  padding: 6px 12px;
-  font: 500 0.8rem system-ui, sans-serif;
-  color: #333;
-  background: #fff;
-  border: 1px solid #bbb;
-  border-radius: 4px;
-  cursor: pointer;
-}
-#reset:hover { background: #f2f2f2; }
-
 /* ==========================================================================
    The blog (revealed once the intro finishes / is skipped).
    Hidden until <html> gets `.revealed`; then the body scrolls and #page
