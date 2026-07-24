@@ -31,7 +31,11 @@
   --line: #e2e2e2;
   --card-bg: #fafafa;
   --card-hover: #f0f0f0;
-  --font: 'Handodle', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  /* Handodle is the primary face. Its free version ships watermarked digits
+     and some punctuation (! # $ % & ( ) * < > ? @ ^ { }), which we stripped
+     from the font so the browser falls back per-glyph. The fallbacks are
+     handwriting fonts so numbers/punctuation still read as hand-drawn. */
+  --font: 'Handodle', 'Bradley Hand', 'Comic Sans MS', cursive, system-ui, sans-serif;
 }
 
 html, body { height: 100%; }
