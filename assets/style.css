@@ -87,12 +87,12 @@ html.revealed #page { visibility: visible; }
 .card {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
   text-align: left;
   padding: 1.25rem 1.4rem;
   background: var(--card-bg);
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 0;
   color: var(--ink);
   font-family: var(--font);
   cursor: pointer;
@@ -105,9 +105,20 @@ html.revealed #page { visibility: visible; }
 }
 .card:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
+.card-head { display: flex; flex-direction: column; gap: 0.35rem; }
 .card-title { font-size: 1.35rem; line-height: 1.2; }
 .card-date  { font-size: 0.8rem; color: var(--muted); }
-.card-excerpt { font-size: 0.95rem; color: var(--muted); line-height: 1.4; }
+
+/* Picture area — sits where the old excerpt was. Shows post.image when set,
+   otherwise a blank rectangle placeholder. */
+.card-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: #ededed center / cover no-repeat;
+  border: 1px solid var(--line);
+  border-radius: 0;
+}
 
 /* ==========================================================================
    In-place reader overlay.

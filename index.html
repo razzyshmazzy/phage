@@ -14,13 +14,13 @@ title: PHAGE
   <div class="cards">
     {% for post in site.posts %}
       <button class="card" type="button" data-post="{{ post.slug }}">
-        <span class="card-title">{{ post.title }}</span>
-        <time class="card-date" datetime="{{ post.date | date_to_xmlschema }}">
-          {{ post.date | date: "%b %-d, %Y" }}
-        </time>
-        {% if post.excerpt %}
-          <span class="card-excerpt">{{ post.excerpt | strip_html | truncate: 140 }}</span>
-        {% endif %}
+        <span class="card-head">
+          <span class="card-title">{{ post.title }}</span>
+          <time class="card-date" datetime="{{ post.date | date_to_xmlschema }}">
+            {{ post.date | date: "%b %-d, %Y" }}
+          </time>
+        </span>
+        <span class="card-image"{% if post.image %} style="background-image: url('{{ post.image | relative_url }}')"{% endif %}></span>
       </button>
     {% endfor %}
   </div>
