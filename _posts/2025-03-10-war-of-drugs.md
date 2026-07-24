@@ -1,6 +1,7 @@
 ---
 title: "War of Drugs"
 date: 2025-03-10
+image: /assets/img/sf.png
 ---
 
 There’s a distinction I’ve been thinking about recently. It’s funny because by law I’m allowed to use neither of these things, yet I feel confident speaking about them. I guess being a participant is not the sole criteria for knowledge on a subject. Many people speak of death, or things related to death, but because there is still breath in their lungs and life in their eyes and song in their voice, they have not yet participated in death themselves—but experts they are nonetheless.

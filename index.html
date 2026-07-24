@@ -20,7 +20,11 @@ title: PHAGE
             {{ post.date | date: "%b %-d, %Y" }}
           </time>
         </span>
-        <span class="card-image"{% if post.image %} style="background-image: url('{{ post.image | relative_url }}')"{% endif %}></span>
+        {% if post.image %}
+          <img class="card-image" src="{{ post.image | relative_url }}" alt="{{ post.title }}" loading="lazy" />
+        {% else %}
+          <span class="card-image card-image--placeholder"></span>
+        {% endif %}
       </button>
     {% endfor %}
   </div>

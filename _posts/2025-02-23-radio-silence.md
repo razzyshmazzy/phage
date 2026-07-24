@@ -1,6 +1,7 @@
 ---
 title: "Radio Silence"
 date: 2025-02-23
+image: /assets/img/radio.png
 ---
 
 We all know what radios are. We’ve all been in the car, listening to Maroon V and Bruno Mars on repeat, or Michael Jackson and The Police if we get lucky. We’ve all gone through a tunnel under a mountain, singing so electrically a random lyric, only for our voice to stutter and depressingly fade out as static drowns out our song.

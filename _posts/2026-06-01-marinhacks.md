@@ -1,6 +1,7 @@
 ---
 title: "MarinHacks"
 date: 2026-06-01
+image: /assets/img/mh.png
 ---
 
 When 2026 began, I certainly could not have anticipated my hackathon victories. Nor could I have foreseen how well versed I would become in web development as a result. My tastes have changed also, and I have taken into my possession the most sought-after quality, that arises only thereafter the mind is battered and repaired under the strain of competition, that superior quality of just ideation. Just ideation is the ability to comprehend the goal, then to form an idea which correctly reaches it, and in doing so, benefits a certain part of society. It’s a core facet of hackathon participation; hence, my strengthening it.

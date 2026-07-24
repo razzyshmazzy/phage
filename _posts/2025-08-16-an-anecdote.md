@@ -1,6 +1,7 @@
 ---
 title: "An Anecdote"
 date: 2025-08-16
+image: /assets/img/templeos.png
 ---
 
 If you can force your heart and nerve and sinew

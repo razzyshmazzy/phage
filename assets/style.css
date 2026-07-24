@@ -77,17 +77,23 @@ html.revealed #page { visibility: visible; }
   margin: 0 auto 3rem;
 }
 
-/* ---- Card grid ---- */
+/* ---- Card collage (masonry) ----
+   CSS columns let cards pack vertically at their natural heights, so a tall
+   picture makes a tall card and a wide one a short card. column-gap +
+   per-card margin supply the spacing between tiles. */
 .cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1.25rem;
+  column-width: 260px;
+  column-gap: 1.25rem;
 }
 
 .card {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  width: 100%;
+  margin: 0 0 1.25rem;
+  break-inside: avoid;          /* never split a card across columns */
+  -webkit-column-break-inside: avoid;
   text-align: left;
   padding: 1.25rem 1.4rem;
   background: var(--card-bg);
@@ -109,15 +115,19 @@ html.revealed #page { visibility: visible; }
 .card-title { font-size: 1.35rem; line-height: 1.2; }
 .card-date  { font-size: 0.8rem; color: var(--muted); }
 
-/* Picture area — sits where the old excerpt was. Shows post.image when set,
-   otherwise a blank rectangle placeholder. */
+/* Picture area — sits where the old excerpt was. A real <img> keeps its
+   own aspect ratio (so cards end up wider/taller to match the picture);
+   the placeholder falls back to a fixed rectangle. */
 .card-image {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 10;
-  background: #ededed center / cover no-repeat;
+  height: auto;
   border: 1px solid var(--line);
   border-radius: 0;
+}
+.card-image--placeholder {
+  aspect-ratio: 16 / 10;
+  background: #ededed;
 }
 
 /* ==========================================================================
