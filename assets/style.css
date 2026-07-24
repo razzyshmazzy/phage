@@ -16,12 +16,12 @@
 }
 
 /* ==========================================================================
-   Hand-drawn body font. Falls back to system-ui until phage.woff2 exists,
-   so the site is fully usable before the real font is supplied.
+   Hand-drawn body font (Handodle). Falls back to system-ui until the font
+   loads, so the site is fully usable if the file is missing.
    ========================================================================== */
 @font-face {
   font-family: 'Phage';
-  src: url('fonts/phage.woff2') format('woff2');
+  src: url('fonts/handodle.ttf') format('truetype');
   font-display: swap;
 }
 
