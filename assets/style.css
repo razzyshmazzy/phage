@@ -81,6 +81,35 @@ html.revealed #page { visibility: visible; }
   margin: 0 auto 3rem;
 }
 
+/* Feed nav button (top-right). Rectangular to match the cards. Placeholder
+   text label for now; swap for an icon later. */
+.feed-nav {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 40;
+  padding: 0.5rem 0.9rem;
+  font-family: var(--font);
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--ink);
+  text-decoration: none;
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.feed-nav:hover { background: var(--card-hover); transform: translateY(-1px); }
+.feed-nav:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* Section heading (e.g. the poetry feed) and its empty state. */
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 400;
+  margin: -1.5rem 0 2.5rem;
+}
+.feed-empty { color: var(--muted); text-align: center; }
+
 /* ---- Card collage ----
    Cards shrink-wrap to their own picture, so each tile is a different size:
    a wide image yields a wide card, a tall image a narrow/tall one. They flow
@@ -90,6 +119,42 @@ html.revealed #page { visibility: visible; }
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 1.25rem;
+}
+
+/* Main feed: full-bleed collage. The page fills the screen with a fixed 10px
+   margin on the left/right and a 10px gap between tiles. Tiles grow (flex) to
+   fill each row edge-to-edge while staying near their default size (capped),
+   so their pictures still drive the varied heights. */
+body.feed #page {
+  max-width: none;
+  padding: 3rem 10px 6rem;
+}
+body.feed .cards {
+  gap: 10px;
+}
+/* feed.js sets each tile's width (per justified row); the picture then fills
+   that width at its own aspect ratio. Minimal chrome for a packed collage. */
+body.feed .card {
+  flex: none;
+  width: 250px;
+  padding: 0;
+  border: none;
+  background: none;
+  gap: 0.4rem;
+}
+body.feed .card:hover { background: none; box-shadow: none; }
+body.feed .card-image {
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  height: auto;
+}
+body.feed .card-head { padding: 0 2px; }
+
+/* PNG pictures: nudge the image inward so the torn-paper edge bites into a
+   margin instead of cutting off a meaningful part of the subject. */
+.card-image--png {
+  padding: 8%;
 }
 
 .card {
@@ -227,3 +292,176 @@ body.reader { overflow: auto; }
   font-size: 1.1rem;
 }
 .back-link:hover { text-decoration: underline; }
+
+/* ==========================================================================
+   Poetry page — the duskfall entrance (poetry.js) and its dark theme.
+   ========================================================================== */
+
+/* Full-screen overlay that stages the raven + feathers. Starts white so the
+   handoff from the white feed is seamless, then dims to a dusky black. */
+#duskfall {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow: hidden;
+  background: #ffffff;
+  pointer-events: none;
+}
+/* The bright overlay fades away, as if the feed's white background dissolved,
+   revealing the dusky tree page beneath. */
+#duskfall.dim { opacity: 0; transition: opacity 1.8s ease; }
+
+
+/* Falling feathers. Position/drift/spin/timing are set per-feather in JS via
+   `left`, `--dx`, `--rot`, animation-duration and -delay. */
+.feather {
+  position: absolute;
+  top: -10vh;
+  aspect-ratio: 24 / 64;
+  opacity: 0;
+  background: center / contain no-repeat
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 64'%3E%3Cpath d='M12 1C4 18 4 40 11 61c1 2 1 2 2 0C20 40 20 18 12 1Z' fill='%232e2e36'/%3E%3Cpath d='M12 6L12 58' stroke='%2315151b' stroke-width='1.2'/%3E%3C/svg%3E");
+  animation-name: feather-fall;
+  animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  animation-fill-mode: both;
+  will-change: transform, opacity;
+}
+@keyframes feather-fall {
+  0%   { transform: translate(0, -6vh) rotate(0deg); opacity: 0; }
+  8%   { opacity: 0.92; }
+  35%  { transform: translate(calc(var(--dx) * 0.4), 25vh) rotate(calc(var(--rot) * 0.35)); }
+  65%  { transform: translate(calc(var(--dx) * -0.15), 60vh) rotate(calc(var(--rot) * 0.7)); }
+  92%  { opacity: 0.85; }
+  100% { transform: translate(var(--dx), 112vh) rotate(var(--rot)); opacity: 0; }
+}
+
+
+/* ---- Dark theme (only on the poetry page) ---- */
+body.poetry { background: #0e0e14; color: #e8e6ea; }
+/* Background: a bare tree (reflected, hanging from the top) over grunge and a
+   dusky base, with an edge vignette. Sits behind everything (content and the
+   raven) so text stays legible. Revealed as the bright intro overlay fades. */
+body.poetry::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(125% 95% at 50% 32%, transparent 46%, rgba(0, 0, 0, 0.72) 100%),
+    url('img/tree.png') center / cover no-repeat,
+    url('img/grunge.png') center / cover no-repeat;
+}
+
+/* Cosmic dust: individual half-blurred motes drifting slowly in random
+   directions and fading in/out (ephemeral), floating around the branches.
+   Motes are generated by poetry.js; per-mote drift/size/blur/opacity/timing
+   are set inline. Sits in front of the tree but behind the content. */
+.dust {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.dust-mote {
+  position: absolute;
+  border-radius: 50%;
+  background: #d0d0d8;
+  opacity: var(--maxop, 0.4);
+  will-change: transform, opacity;
+  animation-name: dust-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+@keyframes dust-float {
+  0%   { transform: translate(0, 0);                 opacity: 0; }
+  20%  { opacity: var(--maxop); }
+  50%  { transform: translate(var(--dx), var(--dy)); }
+  80%  { opacity: var(--maxop); }
+  100% { transform: translate(0, 0);                 opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dust-mote { animation: none; }
+}
+/* PHAGE.png is black art on a white field. Invert flips it to white art on
+   black; `screen` then drops that black back to the page behind it. */
+body.poetry .brand { filter: invert(1); mix-blend-mode: screen; opacity: 0.92; }
+body.poetry .section-title { color: #efeef2; }
+body.poetry .feed-empty { color: #9a97a5; }
+
+body.poetry .feed-nav {
+  background: #17161f;
+  border-color: #33313f;
+  color: #e8e6ea;
+}
+body.poetry .feed-nav:hover { background: #201e2b; }
+
+body.poetry .card {
+  background: #16151d;
+  border-color: #2c2a37;
+  color: #e8e6ea;
+}
+body.poetry .card:hover { background: #1e1c28; }
+body.poetry .card-date { color: #928fa0; }
+body.poetry .card-image--placeholder { background: #23212d; }
+
+body.poetry #overlay { background: #0e0e14; }
+body.poetry .prose { color: #e8e6ea; }
+body.poetry .prose a { color: #8ab4ff; }
+body.poetry .prose pre { background: #17161f; }
+body.poetry .prose blockquote { border-left-color: #33313f; color: #b9b6c4; }
+body.poetry #back {
+  background: #17161f;
+  border-color: #33313f;
+  color: #e8e6ea;
+}
+body.poetry #back:hover { background-color: #201e2b; }
+
+/* ---- Poetry collage ----
+   Full-bleed like the feed (10px side margins). No images: feed.js sizes each
+   poem tile by the poem's length. Dark boxes with a centered title. */
+body.poetry #page { max-width: none; padding: 3rem 10px 6rem; }
+/* Tighter vertical spacing between rows (5px), horizontal gap stays 10px to
+   match feed.js's packing. */
+body.poetry .cards { gap: 5px 10px; align-items: flex-start; }
+body.poetry .card { flex: none; }
+body.poetry .poem-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+  overflow: hidden;
+  background: #16151d;
+  border: 1px solid #2c2a37;
+  color: #e8e6ea;
+}
+body.poetry .poem-tile:hover {
+  background: #201e2b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+body.poetry .poem-tile .card-title { font-size: 1rem; line-height: 1.15; }
+
+/* The (group) label, revealed and enlarging in when a grouped poem is opened. */
+.poem-group {
+  display: block;
+  text-align: center;
+  color: #928fa0;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
+  transform-origin: center;
+  animation: group-enlarge 0.7s cubic-bezier(0.2, 0.8, 0.25, 1) both;
+}
+@keyframes group-enlarge {
+  0%   { opacity: 0; transform: scale(0.55); }
+  60%  { opacity: 0.9; }
+  100% { opacity: 0.85; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #duskfall.dim { transition: none; }
+  .poem-group { animation: none; opacity: 0.85; }
+}

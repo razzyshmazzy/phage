@@ -1,18 +1,25 @@
 ---
 layout: default
 title: PHAGE
+body_class: feed
 ---
 
 <!-- The real page underneath the intro shell. Hidden until the shatter
      finishes (or is skipped) and `.revealed` is set on <html>. -->
 <div id="page">
+  <!-- Jump to the poetry feed. Placeholder text label; a real icon comes later.
+       Lives inside #page so it stays hidden until the intro reveal. -->
+  <a class="feed-nav" href="{{ '/poetry/' | relative_url }}">poetry</a>
+
   <img class="brand"
        src="{{ '/assets/img/PHAGE.png' | relative_url }}"
        alt="PHAGE" />
 
-  <!-- One rounded card per post, newest first (site.posts order). -->
+  <!-- One card per post, newest first. Poems (category: poetry) are excluded
+       here; they live on the /poetry/ page instead. -->
+  {% assign feed_posts = site.posts | where_exp: "post", "post.category != 'poetry'" %}
   <div class="cards">
-    {% for post in site.posts %}
+    {% for post in feed_posts %}
       <button class="card" type="button" data-post="{{ post.slug }}">
         <span class="card-head">
           <span class="card-title">{{ post.title }}</span>
@@ -21,7 +28,7 @@ title: PHAGE
           </time>
         </span>
         {% if post.image %}
-          <img class="card-image" src="{{ post.image | relative_url }}" alt="{{ post.title }}" loading="lazy" />
+          <img class="card-image{% if post.image contains '.png' %} card-image--png{% endif %}" src="{{ post.image | relative_url }}" alt="{{ post.title }}" loading="lazy" />
         {% else %}
           <span class="card-image card-image--placeholder"></span>
         {% endif %}
@@ -31,7 +38,7 @@ title: PHAGE
 
   <!-- Pre-rendered post bodies, hidden. The overlay clones one of these on
        demand, so there is no client-side markdown parsing. -->
-  {% for post in site.posts %}
+  {% for post in feed_posts %}
     <article id="post-{{ post.slug }}" class="post-content" hidden>
       <h1 class="post-title">{{ post.title }}</h1>
       <time class="post-date" datetime="{{ post.date | date_to_xmlschema }}">
@@ -54,3 +61,4 @@ title: PHAGE
 <script>window.PHAGE_BASE = "{{ site.baseurl }}";</script>
 <script src="{{ '/assets/intro.js' | relative_url }}"></script>
 <script src="{{ '/assets/blog.js' | relative_url }}"></script>
+<script src="{{ '/assets/feed.js' | relative_url }}"></script>

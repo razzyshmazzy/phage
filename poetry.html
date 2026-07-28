@@ -1,0 +1,70 @@
+---
+layout: default
+title: PHAGE — Poetry
+permalink: /poetry/
+body_class: poetry
+---
+
+<!-- Poetry feed. Same card + overlay machinery as the main feed, scoped to
+     posts marked `category: poetry`. Instead of the shattering intro, this page
+     plays the duskfall sequence (poetry.js): a raven rotates in, feathers fall,
+     the lights dim, and the page settles into a dusky black. poetry.js reveals
+     #page when the sequence ends. -->
+
+<!-- Duskfall intro overlay: covers the page while the feathers fall, then fades
+     to reveal the settled page. -->
+<div id="duskfall" aria-hidden="true"></div>
+
+<div id="page">
+  <!-- Cosmic dust motes floating around the branches (filled by poetry.js). -->
+  <div class="dust" aria-hidden="true"></div>
+
+  <!-- Back to the main feed. Mirrors the feed's poetry button. -->
+  <a class="feed-nav" href="{{ '/' | relative_url }}">feed</a>
+
+  <img class="brand"
+       src="{{ '/assets/img/PHAGE.png' | relative_url }}"
+       alt="PHAGE" />
+  <h1 class="section-title">poetry</h1>
+
+  {% assign poems = site.posts | where: "category", "poetry" %}
+
+  {% if poems.size > 0 %}
+    <!-- Poem tiles: no images. feed.js sizes each tile by the poem's length
+         (data-weight) and packs them into a messy, screen-filling collage. -->
+    <div class="cards">
+      {% for post in poems %}
+        <button class="card poem-tile" type="button"
+                data-post="{{ post.slug }}"
+                data-weight="{{ post.content | strip_html | size }}">
+          <span class="card-title">{{ post.title }}</span>
+        </button>
+      {% endfor %}
+    </div>
+
+    <!-- Hidden post bodies the overlay clones on click. Grouped poems reveal
+         their (group) label above the title when enlarged. -->
+    {% for post in poems %}
+      <article id="post-{{ post.slug }}" class="post-content" hidden>
+        {% if post.group %}<span class="poem-group">({{ post.group }})</span>{% endif %}
+        <h1 class="post-title">{{ post.title }}</h1>
+        {{ post.content }}
+      </article>
+    {% endfor %}
+  {% else %}
+    <p class="feed-empty">No poems yet. Mark a post with <code>category: poetry</code> and it lands here.</p>
+  {% endif %}
+</div>
+
+<!-- In-place reader overlay (single instance, filled per click). -->
+<div id="overlay" hidden>
+  <button id="back" type="button" aria-label="Back">&larr;</button>
+  <div id="overlay-body" class="prose"></div>
+</div>
+
+<!-- No-JS fallback: reveal the feed if the duskfall script never runs. -->
+<noscript><style>#page{visibility:visible}#duskfall{display:none}</style></noscript>
+
+<script src="{{ '/assets/poetry.js' | relative_url }}"></script>
+<script src="{{ '/assets/feed.js' | relative_url }}"></script>
+<script src="{{ '/assets/blog.js' | relative_url }}"></script>

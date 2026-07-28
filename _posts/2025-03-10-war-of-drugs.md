@@ -4,7 +4,7 @@ date: 2025-03-10
 image: /assets/img/sf.png
 ---
 
-There’s a distinction I’ve been thinking about recently. It’s funny because by law I’m allowed to use neither of these things, yet I feel confident speaking about them. I guess being a participant is not the sole criteria for knowledge on a subject. Many people speak of death, or things related to death, but because there is still breath in their lungs and life in their eyes and song in their voice, they have not yet participated in death themselves—but experts they are nonetheless.
+There’s a distinction I’ve been thinking about recently. It’s funny because by law I’m allowed to use neither of these things, yet I feel confident speaking about them. I guess being a participant is not the sole criterion for knowledge on a subject. Many people speak of death, or things related to death, but because there is still breath in their lungs and life in their eyes and song in their voice, they have not yet participated in death themselves—but experts they are nonetheless.
 
 So, here I will distinguish for you the difference between marijuana and alcohol.
 
@@ -14,4 +14,8 @@ Alcoholism is a spectrum. Alcohol is a drug that numbs. If you’re sad, you can
 
 Whereas weed is chemical, the phenomenon of alcohol is a psychological one. Alcohol operates under a psychological truth, that which is put forth by Erasmus’ In Praise of Folly and summarized neatly by the couplet: “Where ignorance is bliss, / ‘Tis folly to be wise” from Thomas Gray’s Ode On a Distant Prospect of Eton College. Essentially, alcohol makes you stupid. It is an inhibitor of one’s ability to tell right from wrong. You will see, then, that, when within its effects, people embody a joy, a mumbling ecstasy. Therefore, alcohol does not directly cause happiness like weed does; rather, the effect of stupidity which arises from its consumption leads to joy by an ignorance of one’s problems and the future, with a wholehearted enjoyment of the moment.
 
-Both alcohol and weed share the similarity of prescribed idiocy. And people ought to be mindful in the consumption of both. Perhaps the knowledge of their effects can provide some nuance toward their legislation.
+Both alcohol and weed share the similarity of prescribed idiocy. And people ought to be mindful in the consumption of both; but understanding what happens beneath the skin is a step toward conscientious use, and it is an educational practice we should foster.
+
+Still, I believe to use either in a conscientious manner requires a ruling faculty society's fledglings are often bereft of. And seeing the rates at which it is distributed, used, and abused: into even the most laissez-faire parent's mind infiltrates the most liberal desire to protect the young by restrictive force and punishment.
+
+Alas, what is a scrutinizing parent, well-informed of outcomes, to a child seeking chemical comfort, thinking the world departed him?

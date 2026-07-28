@@ -4,10 +4,10 @@ date: 2025-08-16
 image: /assets/img/templeos.png
 ---
 
-If you can force your heart and nerve and sinew
-To serve your turn long after they are gone,
-And so hold on when there is nothing in you
-Except the Will which says to them: ‘Hold on!’
+"If you can force your heart and nerve and sinew  
+To serve your turn long after they are gone,  
+And so hold on when there is nothing in you  
+Except the Will which says to them: ‘Hold on!’"
 
 When I first heard this, I understood the poetry. Kipling says we must rise to the occasion, never retreat from weakness, and emerge all the stronger from but a few wisps of strength. Sure, I resonated with the message. But life had thus far been a breeze.
 

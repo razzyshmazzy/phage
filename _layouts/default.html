@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- `reveal: true` in a page's front matter shows #page immediately (pages
+     without the shattering intro, e.g. /poetry/). The feed omits it so the
+     intro drives the reveal via intro.js. -->
+<html lang="en"{% if page.reveal %} class="revealed"{% endif %}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,7 +12,7 @@
   <title>{{ page.title | default: site.title }}</title>
   <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}" />
 </head>
-<body class="{% if page.layout == 'post' %}reader{% endif %}">
+<body class="{% if page.layout == 'post' %}reader{% endif %}{% if page.body_class %} {{ page.body_class }}{% endif %}">
   {{ content }}
 </body>
 </html>
