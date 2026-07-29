@@ -2,6 +2,7 @@
 title: "Someone I Quite Liked"
 date: 2026-07-28
 category: poetry
+year: freshman
 ---
 
 In a world where everyone’s fake

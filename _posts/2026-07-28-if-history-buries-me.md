@@ -2,6 +2,7 @@
 title: "If History Buries Me"
 date: 2026-07-28
 category: poetry
+year: junior
 ---
 
 If history buries me,

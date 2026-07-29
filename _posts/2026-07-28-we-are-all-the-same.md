@@ -2,6 +2,7 @@
 title: "We are all the same"
 date: 2026-07-28
 category: poetry
+year: freshman
 ---
 
 We are all the same

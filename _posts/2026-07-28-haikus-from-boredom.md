@@ -2,6 +2,7 @@
 title: "Haikus From Boredom"
 date: 2026-07-28
 category: poetry
+year: freshman
 ---
 
 Death departs the earth

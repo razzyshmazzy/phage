@@ -25,31 +25,28 @@ body_class: poetry
   <img class="brand"
        src="{{ '/assets/img/PHAGE.png' | relative_url }}"
        alt="PHAGE" />
-  <h1 class="section-title">poetry</h1>
 
   {% assign poems = site.posts | where: "category", "poetry" %}
 
   {% if poems.size > 0 %}
-    <!-- Poem tiles: no images. feed.js sizes each tile by the poem's length
-         (data-weight) and packs them into a messy, screen-filling collage. -->
-    <div class="cards">
-      {% for post in poems %}
-        <button class="card poem-tile" type="button"
-                data-post="{{ post.slug }}"
-                data-weight="{{ post.content | strip_html | size }}">
-          <span class="card-title">{{ post.title }}</span>
-        </button>
-      {% endfor %}
-    </div>
-
-    <!-- Hidden post bodies the overlay clones on click. Grouped poems reveal
-         their (group) label above the title when enlarged. -->
-    {% for post in poems %}
-      <article id="post-{{ post.slug }}" class="post-content" hidden>
-        {% if post.group %}<span class="poem-group">({{ post.group }})</span>{% endif %}
-        <h1 class="post-title">{{ post.title }}</h1>
-        {{ post.content }}
-      </article>
+    <!-- Poems grouped by academic year (Junior, then Sophomore, then Freshman).
+         Each section is its own length-sized collage. Bodies are NOT pre-rendered
+         (that made scrolling laggy) — blog.js fetches each poem on click. -->
+    {% assign years = "junior,sophomore,freshman" | split: "," %}
+    {% for yr in years %}
+      {% assign secposts = poems | where: "year", yr %}
+      {% if secposts.size > 0 %}
+        <h2 class="year-title">{{ yr | capitalize }}</h2>
+        <div class="cards">
+          {% for post in secposts %}
+            <button class="card poem-tile" type="button"
+                    data-post="{{ post.slug }}"
+                    data-weight="{{ post.content | strip_html | size }}">
+              <span class="card-title">{{ post.title }}</span>
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
     {% endfor %}
   {% else %}
     <p class="feed-empty">No poems yet. Mark a post with <code>category: poetry</code> and it lands here.</p>
@@ -65,6 +62,8 @@ body_class: poetry
 <!-- No-JS fallback: reveal the feed if the duskfall script never runs. -->
 <noscript><style>#page{visibility:visible}#duskfall{display:none}</style></noscript>
 
+<script>window.PHAGE_BASE = "{{ site.baseurl }}";</script>
 <script src="{{ '/assets/poetry.js' | relative_url }}"></script>
 <script src="{{ '/assets/feed.js' | relative_url }}"></script>
 <script src="{{ '/assets/blog.js' | relative_url }}"></script>
+<script src="{{ '/assets/select.js' | relative_url }}"></script>

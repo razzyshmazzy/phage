@@ -2,6 +2,7 @@
 title: "A Bardic Man"
 date: 2026-07-28
 category: poetry
+year: freshman
 ---
 
 I am no more a bardic man, no more a poet,

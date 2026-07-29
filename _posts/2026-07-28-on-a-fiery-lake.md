@@ -2,6 +2,7 @@
 title: "On A Fiery Lake"
 date: 2026-07-28
 category: poetry
+year: freshman
 group: "Never-End"
 ---
 

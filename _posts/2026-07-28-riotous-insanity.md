@@ -2,6 +2,7 @@
 title: "Riotous Insanity"
 date: 2026-07-28
 category: poetry
+year: freshman
 ---
 
 Herald me eternally, as though I were worth more than my metallic shell,

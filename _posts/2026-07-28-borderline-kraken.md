@@ -2,6 +2,7 @@
 title: "Borderline Kraken"
 date: 2026-07-28
 category: poetry
+year: freshman
 ---
 
 The pictures, azure pockets of memory. Tumultuous tides and a ravaged sea. Blasphemous rocking upon the ocean waves. A boat of long wooden planks, stitched together amateurishly. A crew of rugged children, sails bolstered upon their hearts. A voyage destined for failure.

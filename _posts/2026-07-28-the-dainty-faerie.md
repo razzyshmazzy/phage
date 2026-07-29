@@ -2,6 +2,7 @@
 title: "The Dainty Faerie"
 date: 2026-07-28
 category: poetry
+year: freshman
 group: "Never-End"
 ---
 

@@ -2,6 +2,7 @@
 title: "Cycle of Life and Death"
 date: 2026-07-28
 category: poetry
+year: freshman
 ---
 
 On the avenue where dreams go to die,

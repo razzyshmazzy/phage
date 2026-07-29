@@ -2,6 +2,7 @@
 title: "Of Ash and Fire"
 date: 2026-07-28
 category: poetry
+year: freshman
 ---
 
 I stumble through familiar streets, unable to make out the hazy features before me. Swathes of black ash coat the asphalt, leaving prints of my feet as I move past; like lost memories, soon swept away. Heavy soot swarms the sky and fills my lungs, forcing me to heave out heavy breaths every few moments.

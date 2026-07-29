@@ -2,6 +2,7 @@
 title: "Let My Death Outlast Me"
 date: 2026-07-28
 category: poetry
+year: junior
 ---
 
 Let my death outlast me

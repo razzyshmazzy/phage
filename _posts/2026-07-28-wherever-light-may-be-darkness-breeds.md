@@ -2,6 +2,7 @@
 title: "Wherever Light May Be, Darkness Breeds"
 date: 2026-07-28
 category: poetry
+year: freshman
 ---
 
 There are a sort of man that dreadfully exist. For no matter the endeavors of them or their folk — and what a terrible hell it must be — to have their heads in constant turmoil; minds bothered, thoughts slaughtered, flashing images of hellish pyres. This, even when standing upon the grassy-golden plains of heaven.

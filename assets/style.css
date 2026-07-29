@@ -408,6 +408,8 @@ body.poetry .card-image--placeholder { background: #23212d; }
 
 body.poetry #overlay { background: #0e0e14; }
 body.poetry .prose { color: #e8e6ea; }
+body.poetry .prose .post-date { display: none; }   /* poems have no real date */
+.overlay-loading { text-align: center; color: #928fa0; font-size: 2rem; letter-spacing: 0.3em; }
 body.poetry .prose a { color: #8ab4ff; }
 body.poetry .prose pre { background: #17161f; }
 body.poetry .prose blockquote { border-left-color: #33313f; color: #b9b6c4; }
@@ -424,14 +426,16 @@ body.poetry #back:hover { background-color: #201e2b; }
 body.poetry #page { max-width: none; padding: 3rem 10px 6rem; }
 /* Tighter vertical spacing between rows (5px), horizontal gap stays 10px to
    match feed.js's packing. */
-body.poetry .cards { gap: 5px 10px; align-items: flex-start; }
+/* align-items: stretch so tiles in a row share the row's (text-driven) height.
+   justify-content: center so partial rows (and the last row) are centered. */
+body.poetry .cards { gap: 5px 10px; align-items: stretch; justify-content: center; }
 body.poetry .card { flex: none; }
 body.poetry .poem-tile {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 10px;
+  padding: 5px 10px;                 /* tight vertical margin around the text */
   overflow: hidden;
   background: #16151d;
   border: 1px solid #2c2a37;
@@ -443,6 +447,16 @@ body.poetry .poem-tile:hover {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
 }
 body.poetry .poem-tile .card-title { font-size: 1rem; line-height: 1.15; }
+
+/* Year section headings (Junior / Sophomore / Freshman). */
+body.poetry .year-title {
+  font-size: 1.9rem;
+  font-weight: 400;
+  color: #efeef2;
+  margin: 2.4rem 0 0.9rem;
+  text-align: center;
+}
+body.poetry .year-title:first-of-type { margin-top: 1rem; }
 
 /* The (group) label, revealed and enlarging in when a grouped poem is opened. */
 .poem-group {

@@ -2,6 +2,7 @@
 title: "Sophomore Sonnets"
 date: 2026-07-28
 category: poetry
+year: sophomore
 ---
 
 ## Sonnet of the Void

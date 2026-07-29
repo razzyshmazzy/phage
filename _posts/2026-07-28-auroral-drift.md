@@ -2,6 +2,7 @@
 title: "Auroral Drift"
 date: 2026-07-28
 category: poetry
+year: junior
 ---
 
 He emerged from the vortex of a blizzard, half-covered, still moving. His foot left no print in the snow.

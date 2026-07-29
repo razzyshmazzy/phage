@@ -2,6 +2,7 @@
 title: "Sickening Silence"
 date: 2026-07-28
 category: poetry
+year: freshman
 ---
 
 There is not a man who stands
