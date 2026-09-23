@@ -293,7 +293,7 @@
     })(revealStart);
 
     // Shatter a short beat after everything has finished being scribbled in.
-    var HOLD = 900;
+    var HOLD = 500;
     var timer = setTimeout(function () { trigger(W / 2, H / 2); },
                            lastEnd + HOLD);
 
