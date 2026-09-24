@@ -1,7 +1,7 @@
 ---
 title: "Where Is My Mind?"
 date: 2025-08-16
-hidden: true          # no card in the feed; reached only via the secret link in An Anecdote
+hidden: true
 ---
 
 Note: Expect more of a time diary, though I’m sure I’ll forget to put dates. Assume each paragraph is written with a length of time in between.
@@ -24,9 +24,9 @@ I don’t want death. But I don’t want to forget either. Even if it hurts. Is 
 
 And fear’s the master of everything. But it’s waning. Doctors say I’ll be discharged within the week. I miss my cats. I’ve been thinking about them a lot.
 
-![Ember and Cinder](/assets/img/emberandcinder1.png)
+![Ember and Cinder]({{ '/assets/img/emberandcinder1.png' | relative_url }})
 
-![Ember licking Cinder](/assets/img/emberandcinder2.png)
+![Ember licking Cinder]({{ '/assets/img/emberandcinder2.png' | relative_url }})
 *(Ember is the bright ginger. Cinder is the dark tortie. They are the best girls ever.)*
 
 Took a little longer but I’m home. Ember is laying on my lap right now. I’m going to shower and sleep, then I’ll finish writing this tomorrow.

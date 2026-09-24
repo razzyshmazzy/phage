@@ -208,8 +208,8 @@ body.feed .card-head { padding: 0 2px; }
   max-height: 300px;
   border-radius: 0;
   /* Torn-paper frame: clip the picture to a ragged silhouette so its edges look
-     old and tattered. feed.js overrides this per tile with a unique, shallower
-     tear (see tornMaskURL); the shared frame.png here is the no-JS fallback. */
+     old and tattered. feed.js swaps this per tile for one of frame-1..8 so the
+     tiles vary; the shared frame.png here is the no-JS fallback. */
   -webkit-mask: url('img/frame.png') center / 100% 100% no-repeat;
           mask: url('img/frame.png') center / 100% 100% no-repeat;
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.18));
