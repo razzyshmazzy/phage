@@ -278,6 +278,19 @@ html.overlay-open body { overflow: hidden; }
 .prose ul, .prose ol { padding-left: 1.4rem; }
 .prose img { max-width: 100%; height: auto; border-radius: 10px; }
 .prose a { color: #1a5fb4; }
+/* Secret in-post link (e.g. the last word of An Anecdote): reads as plain bold
+   text — black, no underline — and turns blue only on hover. Clicking it opens
+   a hidden post in the overlay (see blog.js). Selector beats `.prose a` so the
+   black rest-state wins. */
+.secret-link,
+.prose a.secret-link {
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+}
+.secret-link:hover,
+.prose a.secret-link:hover { color: #1a5fb4; }
 .prose pre {
   background: #f5f5f5;
   padding: 1rem;

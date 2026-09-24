@@ -68,6 +68,15 @@
     });
   });
 
+  // Secret in-post link: an element like
+  //   <a class="secret-link" data-post="where-is-my-mind" ...>destiny</a>
+  // inside an opened post swaps the overlay to the linked (usually hidden) post
+  // instead of navigating away. Delegated so it works on cloned overlay bodies.
+  overlayBody.addEventListener('click', function (e) {
+    var link = e.target.closest('.secret-link[data-post]');
+    if (link) { e.preventDefault(); openPost(link.dataset.post, true); }
+  });
+
   back.addEventListener('click', function () { closePost(false); });
 
   document.addEventListener('keydown', function (e) {

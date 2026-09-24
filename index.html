@@ -16,8 +16,9 @@ body_class: feed
        alt="PHAGE" />
 
   <!-- One card per post, newest first. Poems (category: poetry) are excluded
-       here; they live on the /poetry/ page instead. -->
-  {% assign feed_posts = site.posts | where_exp: "post", "post.category != 'poetry'" %}
+       here (they live on the /poetry/ page instead), as are `hidden: true`
+       posts — those get no card and are reached only via a secret in-post link. -->
+  {% assign feed_posts = site.posts | where_exp: "post", "post.category != 'poetry'" | where_exp: "post", "post.hidden != true" %}
   <div class="cards">
     {% for post in feed_posts %}
       <button class="card" type="button" data-post="{{ post.slug }}">
@@ -37,8 +38,12 @@ body_class: feed
   </div>
 
   <!-- Pre-rendered post bodies, hidden. The overlay clones one of these on
-       demand, so there is no client-side markdown parsing. -->
-  {% for post in feed_posts %}
+       demand, so there is no client-side markdown parsing. Bodies for hidden
+       posts are included too: they show no card but stay openable via a secret
+       in-post link. -->
+  {% assign hidden_posts = site.posts | where_exp: "post", "post.hidden == true" %}
+  {% assign body_posts = feed_posts | concat: hidden_posts %}
+  {% for post in body_posts %}
     <article id="post-{{ post.slug }}" class="post-content" hidden>
       <h1 class="post-title">{{ post.title }}</h1>
       <time class="post-date" datetime="{{ post.date | date_to_xmlschema }}">

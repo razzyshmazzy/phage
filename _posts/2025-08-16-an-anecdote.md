@@ -33,4 +33,4 @@ What causes a stroke? What gave me this weakness? I want to know. My first biolo
 
 But the day will come, in a future unsupervised by this umbral shade, when I will dream of Frankenstein’s monster in its Kafkaesque creation: and imbue tangibility.
 
-For if death cannot kill me, I will manifest destiny.
+For if death cannot kill me, I will manifest <a class="secret-link" href="{{ '/posts/where-is-my-mind/' | relative_url }}" data-post="where-is-my-mind">destiny</a>.
