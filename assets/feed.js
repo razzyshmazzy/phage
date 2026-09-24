@@ -95,14 +95,61 @@
     if (_retries++ < 60) requestAnimationFrame(layoutAll);
   }
 
-  // Feed: relayout as pictures finish loading (aspect ratios become known).
+  // ---- Torn-paper edge (feed pictures) ----
+  // The one shared frame.png mask made every tile's tear identical and cut a
+  // fair way into the picture. Instead, synthesize a unique ragged-rectangle
+  // SVG mask per tile: a per-tile seed varies the tear, and a shallow inset +
+  // small jitter keep it close to the edge so it eats far less of the picture.
+  function tornMaskURL(aspect, seed) {
+    var s = (seed * 2654435761 + 1) >>> 0;
+    function rnd() { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }
+    // Work in a viewBox that matches the picture's aspect so the tear doesn't
+    // stretch differently along the long vs short side.
+    var w = 1000, h = Math.max(250, Math.round(1000 / (aspect || 1.6)));
+    var m = Math.min(w, h);
+    var inset = m * 0.028;         // base distance of the tear in from the edge (shallow)
+    var amp   = m * 0.022;         // tear roughness (small -> low encroachment)
+    var seg   = m * 0.05;          // spacing between successive tear points
+    var pts = [];
+    function edge(x0, y0, x1, y1) {           // walk one edge, jitter ⟂ to it
+      var dx = x1 - x0, dy = y1 - y0, len = Math.hypot(dx, dy);
+      var n = Math.max(3, Math.round(len / seg));
+      var nx = -dy / len, ny = dx / len;      // inward-pointing normal
+      for (var i = 0; i < n; i++) {
+        var t = i / n, j = (rnd() * 2 - 1) * amp;
+        pts.push([x0 + dx * t + nx * j, y0 + dy * t + ny * j]);
+      }
+    }
+    var L = inset, T = inset, R = w - inset, B = h - inset;
+    edge(L, T, R, T); edge(R, T, R, B); edge(R, B, L, B); edge(L, B, L, T);
+    var d = 'M' + pts.map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join('L') + 'Z';
+    var svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 " + w + " " + h +
+              "' preserveAspectRatio='none'><path d='" + d + "' fill='#fff'/></svg>";
+    return 'url("data:image/svg+xml,' + encodeURIComponent(svg) + '")';
+  }
+
+  function applyTornEdge(img, seed) {
+    var a = (img.naturalWidth && img.naturalHeight) ? img.naturalWidth / img.naturalHeight : 1.6;
+    var u = tornMaskURL(a, seed), st = img.style;
+    st.webkitMaskImage = u;        st.maskImage = u;
+    st.webkitMaskSize = '100% 100%';   st.maskSize = '100% 100%';
+    st.webkitMaskRepeat = 'no-repeat'; st.maskRepeat = 'no-repeat';
+    st.webkitMaskPosition = 'center';  st.maskPosition = 'center';
+  }
+
+  // Feed: give each picture its own torn edge, and relayout as pictures finish
+  // loading (their aspect ratios become known, so both the mask and the
+  // justified layout can use the real ratio).
   if (!isPoetry) {
+    var seed = 0;
     containers.forEach(function (container) {
       Array.prototype.forEach.call(
         container.querySelectorAll('img.card-image'),
         function (img) {
+          var s = ++seed;
+          applyTornEdge(img, s);            // immediate (falls back to a 1.6 aspect)
           if (!(img.complete && img.naturalWidth)) {
-            img.addEventListener('load', layoutAll);
+            img.addEventListener('load', function () { applyTornEdge(img, s); layoutAll(); });
             img.addEventListener('error', layoutAll);
           }
         }
