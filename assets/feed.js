@@ -67,10 +67,10 @@
       for (var j = 0; j < items.length; j++) sum += items[j].a;
       var gaps = (items.length - 1) * GAP;
       var h = (W - gaps) / sum;
-      // The last row fills the width just like the others. Only cap how tall it
-      // can get (LAST_MAX) so a sparse final row — e.g. a lone tile — grows to
-      // fill without ballooning to full-screen height.
-      if (last && h > LAST_MAX) h = LAST_MAX;
+      // Keep every tile ~the same size: a sparse last row would otherwise
+      // stretch its tiles much taller/wider than the rest, so cap it back to
+      // the normal row height (scaling those images down to match).
+      if (last && h > LAST_MAX) h = TARGET;
       for (var k = 0; k < items.length; k++) {
         // Width fills the row (length-encoded). Height is left to the content
         // (title + small padding) so poetry tiles hug their text rather than
