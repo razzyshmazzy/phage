@@ -93,6 +93,10 @@
   }
 
   layoutAll();
+  // Final settle: once every image has finished (and the scrollbar state is
+  // its final, permanent one) relayout a last time so the packing converges to
+  // the same rows on every load, regardless of the order images arrived in.
+  window.addEventListener('load', layoutAll);
   var t;
   window.addEventListener('resize', function () {
     clearTimeout(t);

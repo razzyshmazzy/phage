@@ -75,7 +75,13 @@ body {
   padding: 3rem 1.25rem 6rem;
 }
 
-html.revealed body { overflow: auto; }
+/* Force a permanent vertical scrollbar (overflow-y: scroll, not auto) so its
+   track never toggles as images load. That keeps the collage's available width
+   constant, which is what makes feed.js pack the tiles into the same rows every
+   load. overflow-x: hidden so a stray wide row can't add a horizontal bar that
+   would shift the height and re-toggle things. (scrollbar-gutter on <body> is
+   the modern equivalent; this is the universally-supported belt-and-suspenders.) */
+html.revealed body { overflow-y: scroll; overflow-x: hidden; }
 html.revealed #page { visibility: visible; }
 
 .brand {
