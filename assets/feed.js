@@ -41,11 +41,13 @@
     return 1.6;
   }
 
+  // Returns false only when the container has no measurable width yet (read
+  // before the browser's first layout pass); the caller retries next frame.
   function layoutContainer(container) {
     var cards = Array.prototype.slice.call(container.querySelectorAll('.card'));
-    if (!cards.length) return;
+    if (!cards.length) return true;      // nothing to place
     var W = container.clientWidth;
-    if (!W) return;
+    if (!W) return false;                // not measurable yet — signal a retry
 
     var rows = [], row = [], aSum = 0;
     for (var i = 0; i < cards.length; i++) {
@@ -65,7 +67,10 @@
       for (var j = 0; j < items.length; j++) sum += items[j].a;
       var gaps = (items.length - 1) * GAP;
       var h = (W - gaps) / sum;
-      if (last && h > LAST_MAX) h = TARGET;
+      // The last row fills the width just like the others. Only cap how tall it
+      // can get (LAST_MAX) so a sparse final row — e.g. a lone tile — grows to
+      // fill without ballooning to full-screen height.
+      if (last && h > LAST_MAX) h = LAST_MAX;
       for (var k = 0; k < items.length; k++) {
         // Width fills the row (length-encoded). Height is left to the content
         // (title + small padding) so poetry tiles hug their text rather than
@@ -73,9 +78,22 @@
         items[k].card.style.width = Math.floor(items[k].a * h) + 'px';
       }
     }
+    return true;
   }
 
-  function layoutAll() { containers.forEach(layoutContainer); }
+  // Lay out every container. If any wasn't measurable yet (0 width), retry on
+  // the next frame — otherwise, on a warm reload where cached images fire no
+  // 'load' event, a single early 0-width read would strand the tiles at their
+  // CSS default width (250px) and the collage would never justify to fill.
+  var _retries = 0;
+  function layoutAll() {
+    var ready = true;
+    for (var i = 0; i < containers.length; i++) {
+      if (layoutContainer(containers[i]) === false) ready = false;
+    }
+    if (ready) { _retries = 0; return; }
+    if (_retries++ < 60) requestAnimationFrame(layoutAll);
+  }
 
   // Feed: relayout as pictures finish loading (aspect ratios become known).
   if (!isPoetry) {
@@ -102,4 +120,15 @@
     clearTimeout(t);
     t = setTimeout(layoutAll, 120);
   });
+
+  // First visit: the collage is laid out while #page is still hidden behind the
+  // intro. Revealing it adds the permanent scrollbar and shifts the available
+  // width, so relayout the moment `.revealed` lands on <html>.
+  var docEl = document.documentElement;
+  if (!docEl.classList.contains('revealed')) {
+    var obs = new MutationObserver(function () {
+      if (docEl.classList.contains('revealed')) { obs.disconnect(); layoutAll(); }
+    });
+    obs.observe(docEl, { attributes: true, attributeFilter: ['class'] });
+  }
 })();
