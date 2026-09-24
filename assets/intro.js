@@ -232,6 +232,26 @@
     };
   }
 
+  // Horizontally center a group (PHAGE letters, or the phrase words) on the
+  // true screen center. Each piece shares one wide art canvas, and the actual
+  // ink sits off-center within it, so we can't just center the canvas — we
+  // center the union of the pieces' ink bounding boxes. Doing it here (per
+  // resize) also keeps it centered once the art width hits its 1100px cap on
+  // wide screens, which a fixed `left` fraction couldn't.
+  function centerGroupHoriz(group) {
+    if (!group.length || !group[0].bbox) return;
+    var fx0 = Infinity, fx1 = -Infinity;
+    for (var i = 0; i < group.length; i++) {
+      var b = group[i].bbox;
+      if (b.fx < fx0) fx0 = b.fx;
+      if (b.fx + b.fw > fx1) fx1 = b.fx + b.fw;
+    }
+    var w = Math.min(W * 0.6, 1100);            // same art width as drawImg/makeScribbler
+    var mid = (fx0 + fx1) / 2;                  // ink center, as a fraction of the art width
+    var left = 0.5 - mid * (w / W);             // land that ink center on the screen center
+    for (var j = 0; j < group.length; j++) group[j].left = left;
+  }
+
   function resize() {
     DPR = Math.min(window.devicePixelRatio || 1, 2);
     W = window.innerWidth;
@@ -241,6 +261,8 @@
     shell.style.width = W + 'px';
     shell.style.height = H + 'px';
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    centerGroupHoriz(letters);         // center PHAGE + the phrase on screen center
+    centerGroupHoriz(words);
     buildAll();                        // drawn size changed; rebuild scribblers
     if (!shattered) paintShell(performance.now());
   }

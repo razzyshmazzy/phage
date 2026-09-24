@@ -163,9 +163,10 @@ body.feed .card-image {
 body.feed .card-head { padding: 0 2px; }
 
 /* PNG pictures: nudge the image inward so the torn-paper edge bites into a
-   margin instead of cutting off a meaningful part of the subject. */
+   margin instead of cutting off a meaningful part of the subject. The masks now
+   only nibble the border, so a small inset is enough. */
 .card-image--png {
-  padding: 8%;
+  padding: 4%;
 }
 
 .card {
@@ -207,12 +208,26 @@ body.feed .card-head { padding: 0 2px; }
   max-width: min(340px, 100%);
   max-height: 300px;
   border-radius: 0;
-  /* Torn-paper frame: clip the picture to the ragged silhouette so its edges
-     look old and tattered. The mask stretches to each picture's own size. */
-  -webkit-mask: url('img/frame.png') center / 100% 100% no-repeat;
-          mask: url('img/frame.png') center / 100% 100% no-repeat;
+  /* Torn-paper frame: clip the picture to a ragged silhouette so its edges look
+     old and tattered. The mask stretches to each picture's own size. There are
+     8 variants (frame-1..8.png) cycled per-card below so no two neighbours share
+     the same tear; these only nibble ~5% of the border, not a deep bite. */
+  -webkit-mask: url('img/frame-1.png') center / 100% 100% no-repeat;
+          mask: url('img/frame-1.png') center / 100% 100% no-repeat;
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.18));
 }
+
+/* Rotate through the torn-edge variants so the collage isn't a wall of identical
+   silhouettes. Only mask-image is overridden — size/position/repeat carry over
+   from the base rule. Placeholders are excluded (they keep mask:none). */
+.card:nth-child(8n + 1) .card-image:not(.card-image--placeholder) { -webkit-mask-image: url('img/frame-1.png'); mask-image: url('img/frame-1.png'); }
+.card:nth-child(8n + 2) .card-image:not(.card-image--placeholder) { -webkit-mask-image: url('img/frame-2.png'); mask-image: url('img/frame-2.png'); }
+.card:nth-child(8n + 3) .card-image:not(.card-image--placeholder) { -webkit-mask-image: url('img/frame-3.png'); mask-image: url('img/frame-3.png'); }
+.card:nth-child(8n + 4) .card-image:not(.card-image--placeholder) { -webkit-mask-image: url('img/frame-4.png'); mask-image: url('img/frame-4.png'); }
+.card:nth-child(8n + 5) .card-image:not(.card-image--placeholder) { -webkit-mask-image: url('img/frame-5.png'); mask-image: url('img/frame-5.png'); }
+.card:nth-child(8n + 6) .card-image:not(.card-image--placeholder) { -webkit-mask-image: url('img/frame-6.png'); mask-image: url('img/frame-6.png'); }
+.card:nth-child(8n + 7) .card-image:not(.card-image--placeholder) { -webkit-mask-image: url('img/frame-7.png'); mask-image: url('img/frame-7.png'); }
+.card:nth-child(8n + 8) .card-image:not(.card-image--placeholder) { -webkit-mask-image: url('img/frame-8.png'); mask-image: url('img/frame-8.png'); }
 /* No image in the post's front matter: render a plain rectangle, not the
    torn-paper (tattered) frame the real pictures get. Drop the mask + shadow
    inherited from .card-image. */
