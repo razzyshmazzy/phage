@@ -46,6 +46,11 @@ body {
   font-family: var(--font);
   -webkit-font-smoothing: antialiased;
   overflow: hidden;                     /* locked during the intro */
+  /* Always reserve the scrollbar gutter so the collage's available width is
+     constant. Otherwise (esp. on Windows' classic scrollbars) the scrollbar
+     toggling as images load shifts the width and re-packs the rows, so the
+     tile arrangement differs from load to load. */
+  scrollbar-gutter: stable;
 }
 
 /* ==========================================================================
@@ -202,10 +207,16 @@ body.feed .card-head { padding: 0 2px; }
           mask: url('img/frame.png') center / 100% 100% no-repeat;
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.18));
 }
+/* No image in the post's front matter: render a plain rectangle, not the
+   torn-paper (tattered) frame the real pictures get. Drop the mask + shadow
+   inherited from .card-image. */
 .card-image--placeholder {
   width: 240px;
   aspect-ratio: 16 / 10;
   background: #ededed;
+  -webkit-mask: none;
+          mask: none;
+  filter: none;
 }
 
 /* ==========================================================================
